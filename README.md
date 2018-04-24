@@ -34,7 +34,7 @@ Open your terminal and type `doraemon-cli` or `doraemon-cli -h` , you'll see the
 
 # Commands
 ### add | a
-This command would help you to add a new template to the `templates.json`, which will be used by `Scion` to generate projects.
+This command would help you to add a new template to the `templates.json`, which will be used by `doreamon-cli` to generate projects.
 ```
 $ doraemon-cli add
 
@@ -47,7 +47,7 @@ $ doraemon-cli add
 └───────────────────┴────────┘
 ✔ New template has been added successfully!
 ```
-`Scion` use [download-git-repo](https://github.com/flipxfx/download-git-repo) to download git repos. After answering 3 questions, you'll add a new template to `Scion`.
+`doreamon-cli` use [download-git-repo](https://github.com/flipxfx/download-git-repo) to download git repos. After answering 3 questions, you'll add a new template to `doreamon-cli`.
 
 ### list | l
 It shows you the templates list.
@@ -93,10 +93,10 @@ $ doraemon-cli delete
 ```
 
 # Template
-The most important part of Scion is `template`. All templates' infomation were list in the `templates.json`.
+The most important part of doreamon-cli is `template`. All templates' infomation were list in the `templates.json`.
 A template means a project sample, which has a simple or complex file structure.
 
-You can create your own templates repository, and push your templates in different branches. All you need to do then is to add the templates into Scion's `templates.json`.
+You can create your own templates repository, and push your templates in different branches. All you need to do then is to add the templates into doreamon-cli's `templates.json`.
 
 # License
 MIT.

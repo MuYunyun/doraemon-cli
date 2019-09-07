@@ -1,110 +1,14 @@
-# doraemon-cli
-A light tool to generate projects in an easy way.
+### 搭建一个企业级脚手架探索
 
-# Installation
-```
-npm install doraemon-cli -g
-```
-or
-```
-git clone https://github.com/MuYunyun/doraemon-cli.git
+企业级脚手架搭建的探索实践。
 
-cd doraemon-cli && npm install
+### 脚手架的三个组成部分
 
-npm link
-```
+* 全局命令包, 提供 `install`、`init`、`start`、`build` 等命令; [cli-tpl](https://github.com/imaoda/cli-tpl)
+* 模板插件包(单独抽离可以做到同步最新包到业务); [gen-tpl](https://github.com/imaoda/gen-tpl)
+* 构建插件包(webpack 的配置, 单独配置及做到了可单独暴露给用户的功能); [build-tpl](https://github.com/imaoda/build-tpl)
 
-# Usage
-Open your terminal and type `doraemon-cli` or `doraemon-cli -h` , you'll see the help infomation below:
-```
-  Usage: doraemon-cli <command>
+### 相关资料
 
-  Commands:
-
-    add|a      Add a new template
-    list|l     List all the templates
-    init|i     Generate a new project
-    delete|d   Delete a template
-
-  Options:
-
-    -h, --help     output usage information
-    -V, --version  output the version number
-```
-
-# Commands
-### add | a
-This command would help you to add a new template to the `templates.json`, which will be used by `doreamon-cli` to generate projects.
-```
-$ doraemon-cli add
-
-? Set the custom name of the template: my-first-template
-? Branch of the template: new
-┌───────────────────┬────────┐
-│ Template Name     │ Branch │
-├───────────────────┼────────┤
-│ my-first-template │ new    │
-└───────────────────┴────────┘
-✔ New template has been added successfully!
-```
-`doreamon-cli` use [download-git-repo](https://github.com/flipxfx/download-git-repo) to download git repos. After answering 3 questions, you'll add a new template to `doreamon-cli`.
-
-### list | l
-It shows you the templates list.
-```
-$ doraemon-cli list
-
-┌────────────────────┬────────┐
-│ Template Name      │ Branch │
-├────────────────────┼────────┤
-│ my-first-template  │ new    │
-├────────────────────┼────────┤
-│ my-second-template │ master │
-└────────────────────┴────────┘
-```
-
-### init | i
-After adding new templates, you could use this command to generate your own project by choosing template.
-```
-$ doraemon-cli init
-
-? Template name: my-first-template
-? Project name: my-project
-? Where to init the project? ../
-⠹ Downloading template...
-
-New project has been initialized successfully!
-```
-
-It's easy, right?
-
-### delete | d
-To delete a template, you could use this command:
-```
-$ doraemon-cli delete
-
-? Which template you want to delete? my-second-template
-┌───────────────────┬────────┐
-│ Template Name     │ Branch │
-├───────────────────┼────────┤
-│ my-first-template │ new    │
-└───────────────────┴────────┘
-✔ Template has been deleted successfully
-```
-
-# Template
-The most important part of doreamon-cli is `template`. All templates' infomation were list in the `templates.json`.
-A template means a project sample, which has a simple or complex file structure.
-
-You can create your own templates repository, and push your templates in different branches. All you need to do then is to add the templates into doreamon-cli's `templates.json`.
-
-# License
-MIT.
-
-
-
-
-
-
-
-
+* [雪砚的分享](https://github.com/yamcer/dui-cli-examples);
+* [【手把手】15分钟搭一个企业级脚手架](https://juejin.im/post/5d650613f265da03951a0364#comment): 着重推荐这篇文章, 后续脚手架可以按照这篇文章的思路来;

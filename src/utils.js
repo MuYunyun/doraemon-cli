@@ -2,19 +2,25 @@ const fs = require('fs')
 const path = require('path')
 const execSync = require('child_process').execSync
 
+/**
+ * 返回 0 表示未安装 1 表示安装并非最新 2 表示安装最新
+ */
+const InstallNew = 2
+const InstallOld = 1
+const UnInstall = 0
+
 class Utils {
   /**
    * 获取某个包的安装情况
-   * 返回 0 表示未安装 1 表示安装并非最新 2 表示安装最新
    */
   getInstalledStatus(pkgName, targetDir) {
     const genObj = this.getInstalledPkgs(targetDir)
-    if (!genObj[pkgName]) return 0
+    if (!genObj[pkgName]) return UnInstall
     const ltsVersion =
       execSync(`npm view ${pkgName} version --json --registry=https://registry.npm.taobao.org`) + ''
     const current = this.requireFrom(targetDir, path.join(pkgName, 'package.json')).version
-    if (current === ltsVersion.trim()) return 2
-    return 1
+    if (current === ltsVersion.trim()) return InstallNew
+    return InstallOld
   }
 
   /**
@@ -45,14 +51,14 @@ class Utils {
     const { builder } = this.getConfigs()
     const status = this.getInstalledStatus(builder, process.cwd())
     switch (status) {
-      case 0:
+      case UnInstall:
         this.console(`检测到工程并未添加${builder}，将自动为您安装最新版`, 'red')
         this.console(`安装${builder}中...`)
         execSync(`npm i ${builder}@latest -S --registry=https://registry.npm.taobao.org`, {
           cwd: process.cwd()
         })
         break
-      case 1:
+      case InstallOld:
         this.console(
           `检测到您的${builder}并非最新版，推荐在工程下 npm i ${builder}@latest -S 进行更新`
         )
@@ -65,7 +71,7 @@ class Utils {
   getConfigs() {
     const configs = this.requireFrom(process.cwd(), './maoda.js')
     if (!configs || !configs.builder) {
-      this.console('请确保工程根路径下有 maoda.js 文件，且文件中配置了 builder 属性', 'red')
+      this.console('请确保工程根路径下有 xxx.js 文件，且文件中配置了 builder 属性', 'red')
       process.exit(1)
     }
     return configs

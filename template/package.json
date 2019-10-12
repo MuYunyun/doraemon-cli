@@ -1,0 +1,9 @@
+{
+  "name": "_",
+  "description": "_",
+  "repository": "_",
+  "license": "MIT",
+  "dependencies": {
+    "gen-tpl": "0.0.9"
+  }
+}

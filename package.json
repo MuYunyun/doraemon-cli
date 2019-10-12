@@ -7,20 +7,35 @@
     "doraemon-cli": "bin/doraemon"
   },
   "scripts": {},
-  "dependencies": {
-    "chalk": "^2.4.2",
-    "import-from": "^3.0.0",
-    "inquirer": "^6.5.1",
-    "minimist": "^1.2.0",
-    "mkdirp": "^0.5.1",
-    "osenv": "^0.1.5",
-    "resolve-from": "^5.0.0",
-    "yeoman-environment": "^2.4.0"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MuYunyun/doraemon.git"
   },
   "author": "muyunyun",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chalk": "^2.4.2",
+    "husky": "^3.0.8",
+    "import-from": "^3.0.0",
+    "inquirer": "^6.5.1",
+    "lint-staged": "^9.4.2",
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "osenv": "^0.1.5",
+    "prettier": "^1.18.2",
+    "resolve-from": "^5.0.0",
+    "yeoman-environment": "^2.4.0"
+  }
 }

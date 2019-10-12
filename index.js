@@ -1,5 +1,9 @@
 const fs = require('fs')
 const chalk = require('chalk')
+/**
+ * 类似 require，但支持指定目录，让你可以跨工程目录进行 require/resolve，
+ * 比如全局包想引用工程路径下的内容, 后续是否能替换掉
+*/
 const resolveFrom = require('resolve-from').silent
 const requireFrom = require('import-from').silent
 const mkdirp = require('mkdirp') // 跨平台
@@ -7,11 +11,11 @@ const path = require('path')
 const inquirer = require('inquirer')
 // 用于执行一个「模板插件包」
 const yoemanEnv = require('yeoman-environment').createEnv()
-const pkg = require('../package.json')
+const pkg = require('./package.json')
 const execSync = require('child_process').execSync
 const homeDir = require('osenv').home() // 跨平台
-const tplDir = path.resolve(homeDir, 'maoda')
-const Utils = require('../utils')
+const tplDir = path.resolve('template')
+const Utils = require('./src/utils')
 
 class M extends Utils {
   constructor() {
@@ -26,8 +30,8 @@ class M extends Utils {
     this.requireFrom = requireFrom
     this.dir = {
       home: homeDir,
-      tpl: tplDir,
-      cwd: process.cwd(),
+      tpl: tplDir, // 模板路径
+      cwd: process.cwd()
     }
     this.yoemanEnv = yoemanEnv
     this.inquirer = inquirer
@@ -36,20 +40,28 @@ class M extends Utils {
     mkdirp(this.dir.tpl)
     const pkgFile = path.resolve(this.dir.tpl, 'package.json')
     if (!fs.existsSync(pkgFile)) {
-      fs.writeFileSync(pkgFile, JSON.stringify({ name: '_', description: '_', repository: '_', license: 'MIT' }))
+      fs.writeFileSync(
+        pkgFile,
+        JSON.stringify({ name: '_', description: '_', repository: '_', license: 'MIT' })
+      )
     }
   }
   // 校验是否为最新版本的逻辑
   checkCliUpdate() {
     const pkgName = pkg.name
     const version = pkg.version
-    const ltsVersion = execSync(`npm view ${pkgName} version --registry=https://registry.npm.taobao.org`) + '' // 返回 buffer 转 string
-    const ltsVersion = execSync(`npm view doraemon-cli version --registry=https://registry.npm.taobao.org`) + '' // 返回 buffer 转 string
-    if (ltsVersion.trim() !== version) this.console(`cli 版本过旧，建议执行 npm i -g ${pkgName}@latest 升级 cli： ${version} -> ${ltsVersion} `)
+    const ltsVersion =
+      execSync(`npm view doraemon-cli version --registry=https://registry.npm.taobao.org`) + '' // 返回 buffer 转 string
+    if (ltsVersion.trim() !== version)
+      this.console(
+        `cli 版本过旧，建议执行 npm i -g ${pkgName}@latest 升级 cli： ${version} -> ${ltsVersion} `
+      )
   }
   checkCommand() {
     const cmdDirName = 'script'
-    const cmdArr = fs.readdirSync(path.resolve(__dirname, cmdDirName)).map(item => item.split('.')[0])
+    const cmdArr = fs
+      .readdirSync(path.resolve(__dirname, cmdDirName))
+      .map(item => item.split('.')[0])
     if (!cmdArr.includes(process.argv[2])) throw new Error(`${process.argv[2]} 是无效命令`)
     const cmd = require(path.resolve(__dirname, cmdDirName, process.argv[2]))
     this.checkCliUpdate()
